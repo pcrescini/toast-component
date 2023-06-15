@@ -14,9 +14,9 @@ function Footer() {
         >
           The Joy of React
         </a>
-        , a comprehensive React.js course by Josuha Comeau.
+        , a comprehensive React.js course.
       </p>
-      <p>© 2022-present. All rights reserved.</p>
+      <p>© 2022-present Joshua Comeau. All rights reserved.</p>
     </footer>
   );
 }

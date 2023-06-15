@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Button from '../Button';
+import Toast from '../Toast';
 
 import styles from './ToastPlayground.module.css';
 
@@ -9,6 +10,17 @@ const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 function ToastPlayground() {
   const [message, setMessage] = React.useState('');
   const [isSelected, setIsSelected] = React.useState();
+  const [showToast, setShowToast] = React.useState(false);
+
+  function handlePopToast(event) {
+    event.preventDefault();
+    setMessage(message);
+    setShowToast(!showToast);
+  }
+
+  function handleDismiss() {
+    setShowToast(false);
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -17,8 +29,14 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
+      {showToast && (
+        <Toast icon={isSelected} handleDismiss={handleDismiss}>
+          {message}
+        </Toast>
+      )}
+
       <div className={styles.controlsWrapper}>
-        <form>
+        <form onSubmit={handlePopToast}>
           <div className={styles.row}>
             <label
               htmlFor='message'
@@ -32,6 +50,7 @@ function ToastPlayground() {
                 id='message'
                 className={styles.messageInput}
                 value={message}
+                required
                 onChange={(event) => {
                   setMessage(event.target.value);
                 }}
@@ -51,6 +70,7 @@ function ToastPlayground() {
                       name='variant'
                       value={option}
                       checked={option === isSelected}
+                      required
                       onChange={(event) => {
                         setIsSelected(event.target.value);
                       }}
@@ -70,15 +90,16 @@ function ToastPlayground() {
           </div>
         </form>
 
-        <p>
-          <strong>Current value: </strong>
-          {message || '(empty)'}
-        </p>
-
-        <p>
-          <strong>Current radio button selected: </strong>
-          { isSelected || '(empty)'}
-        </p>
+        {/*
+          <p>
+            <strong>Current value: </strong>
+            {message || '(empty)'}
+          </p>
+          <p>
+            <strong>Current radio button selected: </strong>
+            {isSelected || '(empty)'}
+          </p>
+        */}
       </div>
     </div>
   );
