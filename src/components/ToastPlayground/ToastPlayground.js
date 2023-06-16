@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Button from '../Button';
-import Toast from '../Toast';
+import ToastShelf from '../ToastShelf';
 
 import styles from './ToastPlayground.module.css';
 
@@ -9,17 +9,32 @@ const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 
 function ToastPlayground() {
   const [message, setMessage] = React.useState('');
-  const [isSelected, setIsSelected] = React.useState();
-  const [showToast, setShowToast] = React.useState(false);
+  const [variant, setVariant] = React.useState();
+  const [toasts, setToasts] = React.useState([]);
 
-  function handlePopToast(event) {
+  function handleCreateToast(event) {
     event.preventDefault();
-    setMessage(message);
-    setShowToast(!showToast);
+
+    const nextToasts = [
+      ...toasts,
+      {
+        id: crypto.randomUUID(),
+        message,
+        variant,
+      },
+    ];
+
+    setToasts(nextToasts);
+    setMessage('');
+    setVariant();
   }
 
-  function handleDismiss() {
-    setShowToast(false);
+  function handleDismiss(id) {
+    const nextToasts = toasts.filter((toast) => {
+      return toast.id !== id;
+    });
+
+    setToasts(nextToasts);
   }
 
   return (
@@ -29,14 +44,10 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      {showToast && (
-        <Toast icon={isSelected} handleDismiss={handleDismiss}>
-          {message}
-        </Toast>
-      )}
+      <ToastShelf toasts={toasts} handleDismiss={handleDismiss} />
 
       <div className={styles.controlsWrapper}>
-        <form onSubmit={handlePopToast}>
+        <form onSubmit={handleCreateToast}>
           <div className={styles.row}>
             <label
               htmlFor='message'
@@ -69,10 +80,10 @@ function ToastPlayground() {
                       type='radio'
                       name='variant'
                       value={option}
-                      checked={option === isSelected}
+                      checked={option === variant}
                       required
                       onChange={(event) => {
-                        setIsSelected(event.target.value);
+                        setVariant(event.target.value);
                       }}
                     />
                     {option}
