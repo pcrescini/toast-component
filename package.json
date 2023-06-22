@@ -2,6 +2,7 @@
   "name": "toast-component",
   "version": "0.1.0",
   "private": true,
+  "author": "Josh Comeau <me@joshwcomeau.com>",
   "dependencies": {
     "cra-template": "1.2.0",
     "@testing-library/jest-dom": "^5.16.4",
